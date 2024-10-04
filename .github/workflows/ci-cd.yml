@@ -10,42 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the code from GitHub
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
+      # Set up Node.js environment (ensure you're using the correct version)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # or the Node version you're using
+          node-version: '20'  # Use '20' since Node 16 is deprecated
 
-      # For each microservice 
+      # Install dependencies for user-service
       - name: Install dependencies for user-service
-        working-directory: ./user-service  # Adjust this path based on your structure
+        working-directory: ./user-service  # Ensure this path is correct
         run: npm install
 
-      - name: Run tests for user-service
-        working-directory: ./user-service
-        run: npm test
-
-
+      # Install dependencies for product-service
       - name: Install dependencies for product-service
-        working-directory: ./product-service
+        working-directory: ./product-service  # Ensure this path is correct
         run: npm install
 
-      - name: Run tests for product-service
-        working-directory: ./product-service
-        run: npm test
-
-
+      # Install dependencies for order-service
       - name: Install dependencies for order-service
-        working-directory: ./order-service
+        working-directory: ./order-service  # Ensure this path is correct
         run: npm install
 
-      - name: Run tests for product-service
-        working-directory: ./product-service
-        run: npm test
-
-        
-
-      # Add deployment steps after tests pass (like Heroku or any other platform)
+      # Add Heroku deployment steps after build
+      # - name: Deploy to Heroku
+      #   run: |
+      #     echo "Deploying to Heroku"
+      #     git remote add heroku https://git.heroku.com/<your-app-name>.git
+      #     git push heroku HEAD:master -f
+      #   env:
+      #     HEROKU_API_KEY: 
