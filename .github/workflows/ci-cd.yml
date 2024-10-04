@@ -1,33 +1,51 @@
 name: CI/CD Pipeline
 
-# Trigger the workflow on push or pull requests to the main branch
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
-# Define jobs for the workflow
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+      # Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # or the Node version you're using
 
-    - name: Install dependencies
-      run: npm install
+      # For each microservice 
+      - name: Install dependencies for user-service
+        working-directory: ./user-service  # Adjust this path based on your structure
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests for user-service
+        working-directory: ./user-service
+        run: npm test
 
-    - name: Build the project
-      run: npm run build
+
+      - name: Install dependencies for product-service
+        working-directory: ./product-service
+        run: npm install
+
+      - name: Run tests for product-service
+        working-directory: ./product-service
+        run: npm test
+
+
+      - name: Install dependencies for order-service
+        working-directory: ./order-service
+        run: npm install
+
+      - name: Run tests for product-service
+        working-directory: ./product-service
+        run: npm test
+
+        
+
+      # Add deployment steps after tests pass (like Heroku or any other platform)
